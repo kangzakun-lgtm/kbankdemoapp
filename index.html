@@ -20,61 +20,27 @@ body{
     color:#111;
 }
 
-/* 로딩 */
-
-.loader{
-    position:fixed;
-    inset:0;
-    background:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    flex-direction:column;
-    transition:.4s;
-}
-
-.loader.hidden{
-    opacity:0;
-    pointer-events:none;
-}
-
-.loader-logo{
-    font-size:42px;
-    font-weight:800;
-    color:#001b6d;
-}
-
-.loader-bar{
-    width:120px;
-    height:5px;
-    background:#ddd;
-    margin-top:20px;
-    border-radius:999px;
-    overflow:hidden;
-}
-
-.loader-fill{
-    width:40%;
-    height:100%;
-    background:#003cff;
-    border-radius:999px;
-    animation:loading 1s infinite;
-}
-
-@keyframes loading{
-    0%{transform:translateX(-100%);}
-    100%{transform:translateX(300%);}
+.hidden{
+    display:none !important;
 }
 
 .app{
     max-width:430px;
-    margin:0 auto;
+    margin:auto;
     min-height:100vh;
-    padding-bottom:100px;
+    padding-bottom:110px;
 }
 
-/* 헤더 */
+/* 공통 */
+
+.page{
+    animation:fade .25s ease;
+}
+
+@keyframes fade{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
 .header{
     padding:24px;
@@ -90,6 +56,49 @@ body{
     color:#001b6d;
 }
 
+.back{
+    padding:24px 24px 0;
+    font-size:18px;
+    font-weight:800;
+    color:#001b6d;
+}
+
+/* 로딩 */
+
+.loading{
+    position:fixed;
+    inset:0;
+    background:white;
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.loading.hidden{
+    display:none;
+}
+
+.spinner{
+    width:50px;
+    height:50px;
+    border:5px solid #ddd;
+    border-top:5px solid #003cff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.loading-text{
+    margin-top:18px;
+    font-weight:700;
+    color:#001b6d;
+}
+
 /* 카드 */
 
 .card{
@@ -98,7 +107,6 @@ body{
     border-radius:28px;
     padding:24px;
     color:white;
-    cursor:pointer;
 }
 
 .account-number{
@@ -107,7 +115,7 @@ body{
 }
 
 .label{
-    margin-top:36px;
+    margin-top:34px;
     opacity:.7;
 }
 
@@ -141,19 +149,20 @@ body{
 .menu-icon{
     width:64px;
     height:64px;
-    border-radius:22px;
     background:white;
+    border-radius:22px;
     display:flex;
     justify-content:center;
     align-items:center;
+    margin:auto;
     font-size:28px;
-    margin:0 auto 10px;
     box-shadow:0 2px 10px rgba(0,0,0,.05);
 }
 
 .menu-name{
+    margin-top:10px;
     font-size:14px;
-    font-weight:600;
+    font-weight:700;
 }
 
 /* 배너 */
@@ -168,7 +177,6 @@ body{
     gap:14px;
     overflow-x:auto;
     scroll-snap-type:x mandatory;
-    padding-bottom:10px;
 }
 
 .banner-track::-webkit-scrollbar{
@@ -196,7 +204,7 @@ body{
 /* 계좌 */
 
 .section{
-    margin:30px 20px 0;
+    margin:28px 20px 0;
 }
 
 .section-title{
@@ -215,10 +223,6 @@ body{
 }
 
 /* 거래내역 */
-
-.hidden{
-    display:none;
-}
 
 .history-header{
     padding:24px;
@@ -280,14 +284,64 @@ body{
     font-size:14px;
 }
 
-.back{
-    padding:24px 24px 0;
-    color:#001b6d;
-    font-weight:800;
-    font-size:18px;
+/* 이체 */
+
+.transfer-box{
+    background:white;
+    margin:20px;
+    border-radius:24px;
+    padding:24px;
 }
 
-/* 하단 탭 */
+.input{
+    width:100%;
+    border:none;
+    background:#f3f4f6;
+    border-radius:16px;
+    padding:18px;
+    margin-top:14px;
+    font-size:16px;
+}
+
+.button{
+    width:100%;
+    margin-top:22px;
+    background:#003cff;
+    color:white;
+    border:none;
+    padding:18px;
+    border-radius:18px;
+    font-size:17px;
+    font-weight:800;
+}
+
+/* 전체 메뉴 */
+
+.all-grid{
+    margin:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.all-item{
+    background:white;
+    border-radius:22px;
+    padding:24px 10px;
+    text-align:center;
+}
+
+.all-icon{
+    font-size:32px;
+}
+
+.all-name{
+    margin-top:10px;
+    font-weight:700;
+    font-size:14px;
+}
+
+/* 탭바 */
 
 .tabbar{
     position:fixed;
@@ -320,26 +374,28 @@ body{
 
 <!-- 로딩 -->
 
-<div class="loader" id="loader">
-    <div class="loader-logo">K Wallet</div>
+<div class="loading" id="loading">
 
-    <div class="loader-bar">
-        <div class="loader-fill"></div>
+    <div class="spinner"></div>
+
+    <div class="loading-text">
+        불러오는 중...
     </div>
+
 </div>
 
 <div class="app">
 
 <!-- 홈 -->
 
-<div id="homePage">
+<div id="homePage" class="page">
 
     <div class="header">
         <div class="logo">K Wallet</div>
         <div style="font-size:24px;">🔔</div>
     </div>
 
-    <div class="card" onclick="openHistory()">
+    <div class="card" onclick="goPage('historyPage')">
 
         <div style="font-size:22px; font-weight:700;">
             K Wallet 입출금통장
@@ -363,33 +419,29 @@ body{
 
     </div>
 
-    <!-- 메뉴 -->
-
     <div class="menu-grid">
 
-        <div class="menu" onclick="showPopup('이체 페이지 예시')">
+        <div class="menu" onclick="goPage('transferPage')">
             <div class="menu-icon">💸</div>
             <div class="menu-name">이체</div>
         </div>
 
-        <div class="menu" onclick="showPopup('카드 관리 예시')">
+        <div class="menu">
             <div class="menu-icon">💳</div>
             <div class="menu-name">카드</div>
         </div>
 
-        <div class="menu" onclick="showPopup('ATM 출금 예시')">
+        <div class="menu">
             <div class="menu-icon">🏧</div>
             <div class="menu-name">ATM출금</div>
         </div>
 
-        <div class="menu" onclick="showPopup('전체 메뉴 예시')">
+        <div class="menu" onclick="goPage('allPage')">
             <div class="menu-icon">☰</div>
             <div class="menu-name">전체</div>
         </div>
 
     </div>
-
-    <!-- 홍보 배너 -->
 
     <div class="banner-wrap">
 
@@ -411,46 +463,18 @@ body{
                 </div>
 
                 <div class="banner-desc">
-                    이번달 최대 5만원 혜택
+                    최대 5만원 혜택
                 </div>
             </div>
 
             <div class="banner">
                 <div class="banner-title">
-                    해외결제 수수료
+                    해외결제 이벤트
                 </div>
 
                 <div class="banner-desc">
-                    특별 할인 이벤트
+                    수수료 할인 진행중
                 </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- 계좌 -->
-
-    <div class="section">
-
-        <div class="section-title">
-            내 계좌
-        </div>
-
-        <div class="account-item">
-
-            <div>
-                <div style="font-weight:700;">
-                    K Wallet 입출금통장
-                </div>
-
-                <div style="margin-top:6px; color:#888;">
-                    100-190-820242
-                </div>
-            </div>
-
-            <div style="font-weight:800;">
-                233원
             </div>
 
         </div>
@@ -461,9 +485,9 @@ body{
 
 <!-- 거래내역 -->
 
-<div id="historyPage" class="hidden">
+<div id="historyPage" class="hidden page">
 
-    <div class="back" onclick="goBack()">
+    <div class="back" onclick="goPage('homePage')">
         ← 돌아가기
     </div>
 
@@ -491,9 +515,99 @@ body{
 
 </div>
 
+<!-- 이체 -->
+
+<div id="transferPage" class="hidden page">
+
+    <div class="back" onclick="goPage('homePage')">
+        ← 돌아가기
+    </div>
+
+    <div class="history-header">
+
+        <div class="history-title">
+            이체
+        </div>
+
+    </div>
+
+    <div class="transfer-box">
+
+        <div style="font-weight:700;">
+            받는 계좌번호
+        </div>
+
+        <input class="input" placeholder="계좌번호 입력"/>
+
+        <div style="font-weight:700; margin-top:22px;">
+            금액
+        </div>
+
+        <input class="input" placeholder="금액 입력"/>
+
+        <button class="button">
+            다음
+        </button>
+
+    </div>
+
 </div>
 
-<!-- 하단 탭 -->
+<!-- 전체 -->
+
+<div id="allPage" class="hidden page">
+
+    <div class="back" onclick="goPage('homePage')">
+        ← 돌아가기
+    </div>
+
+    <div class="history-header">
+
+        <div class="history-title">
+            전체
+        </div>
+
+    </div>
+
+    <div class="all-grid">
+
+        <div class="all-item">
+            <div class="all-icon">💰</div>
+            <div class="all-name">내 자산</div>
+        </div>
+
+        <div class="all-item">
+            <div class="all-icon">📈</div>
+            <div class="all-name">투자</div>
+        </div>
+
+        <div class="all-item">
+            <div class="all-icon">💳</div>
+            <div class="all-name">카드</div>
+        </div>
+
+        <div class="all-item">
+            <div class="all-icon">🏧</div>
+            <div class="all-name">ATM출금</div>
+        </div>
+
+        <div class="all-item">
+            <div class="all-icon">📱</div>
+            <div class="all-name">모바일결제</div>
+        </div>
+
+        <div class="all-item">
+            <div class="all-icon">⚙️</div>
+            <div class="all-name">설정</div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- 탭바 -->
 
 <div class="tabbar">
 
@@ -522,117 +636,132 @@ body{
 <script>
 
 setTimeout(()=>{
-    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("loading").classList.add("hidden");
 },1500);
 
 const transactions = [
 
 {
-    name:"SHIBATA_JIDOS",
-    amount:-1390322,
-    balance:"233원",
-    date:"2025.04.02"
+name:"SHIBATA_JIDOS",
+amount:-1390322,
+balance:"233원",
+date:"2025.04.02"
 },
 
 {
-    name:"사용자 C",
-    amount:438055,
-    balance:"1,390,555원",
-    date:"2025.03.27"
+name:"마영민",
+amount:438055,
+balance:"1,390,555원",
+date:"2025.03.27"
 },
 
 {
-    name:"사용자 B",
-    amount:609000,
-    balance:"952,500원",
-    date:"2025.03.27"
+name:"오택우",
+amount:609000,
+balance:"952,500원",
+date:"2025.03.27"
 },
 
 {
-    name:"사용자 A",
-    amount:343500,
-    balance:"343,500원",
-    date:"2025.03.26"
+name:"추헌승",
+amount:343500,
+balance:"343,500원",
+date:"2025.03.26"
+},
+
+{
+name:"SHIBATA_JIDOS",
+amount:-248233,
+balance:"0원",
+date:"2025.03.02"
+},
+
+{
+name:"사용자D",
+amount:248345,
+balance:"248,345원",
+date:"2025.02.28"
 }
 
 ];
 
 function renderTransactions(data){
 
-    const list = document.getElementById("transactionList");
+const list = document.getElementById("transactionList");
 
-    list.innerHTML = "";
+list.innerHTML = "";
 
-    data.forEach(item=>{
+data.forEach(item=>{
 
-        const plus = item.amount > 0;
+const plus = item.amount > 0;
 
-        list.innerHTML += `
+list.innerHTML += `
 
-        <div class="transaction">
+<div class="transaction">
 
-            <div class="top-row">
+<div class="top-row">
 
-                <div class="name">
-                    ${item.name}
-                </div>
+<div class="name">
+${item.name}
+</div>
 
-                <div class="amount ${plus ? 'plus':'minus'}">
-                    ${plus ? '+' : '-'}${Math.abs(item.amount).toLocaleString()}원
-                </div>
+<div class="amount ${plus ? 'plus':'minus'}">
+${plus ? '+' : '-'}${Math.abs(item.amount).toLocaleString()}원
+</div>
 
-            </div>
+</div>
 
-            <div class="bottom-row">
+<div class="bottom-row">
 
-                <div>
-                    ${item.date}
-                </div>
+<div>${item.date}</div>
 
-                <div>
-                    잔액 ${item.balance}
-                </div>
+<div>잔액 ${item.balance}</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-        `;
-    });
+`;
+
+});
+
 }
 
 renderTransactions(transactions);
 
 function sortLatest(){
-    renderTransactions(transactions);
+renderTransactions(transactions);
 }
 
 function sortAmount(){
 
-    const sorted = [...transactions].sort((a,b)=>
-        Math.abs(b.amount)-Math.abs(a.amount)
-    );
+const sorted = [...transactions].sort((a,b)=>
+Math.abs(b.amount)-Math.abs(a.amount)
+);
 
-    renderTransactions(sorted);
+renderTransactions(sorted);
+
 }
 
-function openHistory(){
+function goPage(target){
 
-    document.getElementById("homePage").classList.add("hidden");
-    document.getElementById("historyPage").classList.remove("hidden");
-}
+document.getElementById("loading").classList.remove("hidden");
 
-function goBack(){
+setTimeout(()=>{
 
-    document.getElementById("historyPage").classList.add("hidden");
-    document.getElementById("homePage").classList.remove("hidden");
-}
+document.querySelectorAll(".page").forEach(page=>{
+page.classList.add("hidden");
+});
 
-function showPopup(text){
-    alert(text);
+document.getElementById(target).classList.remove("hidden");
+
+document.getElementById("loading").classList.add("hidden");
+
+},1200);
+
 }
 
 </script>
 
 </body>
-	</html>
+</html>
