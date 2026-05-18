@@ -9,7 +9,13 @@
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
 body{background:#f4f5f7;color:#111}
 .hidden{display:none!important}
-.app{max-width:430px;margin:auto;min-height:100vh;background:#f4f5f7;padding-bottom:90px}
+.app{
+  max-width:430px;
+  margin:auto;
+  min-height:100vh;
+  background:#f4f5f7;
+  padding-bottom:90px;
+}
 .page{animation:fade .25s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
@@ -26,8 +32,18 @@ body{background:#f4f5f7;color:#111}
 .card{margin:0 20px;background:linear-gradient(135deg,#00104a,#00218f);color:white;border-radius:28px;padding:20px}
 .card h2{font-size:18px}
 .card .num{margin-top:10px;font-size:18px;opacity:.85}
-.card .label{margin-top:28px;font-size:13px;opacity:.7}
-.card .balance{font-size:42px;font-weight:900;margin-top:10px}
+.card .label{
+  margin-top:28px;
+  font-size:12px;
+  opacity:.7;
+  text-align:right;
+}
+.card .balance{
+  font-size:22px;
+  font-weight:900;
+  margin-top:6px;
+  text-align:right;
+}
 .card .asset{display:inline-block;margin-top:20px;font-size:13px;background:rgba(255,255,255,.12);padding:10px 14px;border-radius:999px}
 
 .menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 20px}
@@ -41,26 +57,58 @@ body{background:#f4f5f7;color:#111}
 .banner h3{font-size:24px}
 .banner p{margin-top:8px;font-size:14px;color:#666}
 
-.account-top{background:white;border-bottom-left-radius:34px;border-bottom-right-radius:34px;padding:48px 20px 24px}
+.history-back{
+  position:absolute;
+  top:54px;
+  left:20px;
+  font-size:34px;
+  z-index:5;
+}
+.account-top{
+  position:relative;
+  background:white;
+  border-bottom-left-radius:28px;
+  border-bottom-right-radius:28px;
+  padding:86px 20px 22px;
+}
 .account-row{display:flex;justify-content:space-between}
-.account-top h1{font-size:28px;margin-top:18px}
-.account-no{font-size:15px;color:#555;margin-top:8px}
-.account-top .amount{text-align:right;font-size:40px;font-weight:900;margin-top:34px}
+.account-top h1{
+  font-size:22px;
+  margin-top:8px;
+}
+.account-no{
+  font-size:13px;
+  color:#555;
+  margin-top:6px;
+}
+.account-top .amount{
+  text-align:right;
+  font-size:28px;
+  font-weight:900;
+  margin-top:22px;
+}
 .btn-row{display:flex;gap:14px;margin-top:28px}
-.btn{flex:1;height:52px;border:none;border-radius:18px;font-size:17px;font-weight:900}
+.btn{
+  flex:1;
+  height:46px;
+  border:none;
+  border-radius:15px;
+  font-size:15px;
+  font-weight:900;
+}
 .btn.light{background:#eef2ff;color:#001dce}
 .btn.blue{background:#001dce;color:white}
 .small-icons{display:flex;justify-content:space-around;margin-top:28px}
-.small-icons div{text-align:center;color:#666;font-size:12px}
-.small-icons span{width:50px;height:50px;background:#f3f4f6;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:auto auto 9px}
+.small-icons div{text-align:center;color:#666;font-size:10px}
+.small-icons span{width:42px;height:42px;background:#f3f4f6;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:auto auto 9px}
 
 .filter{display:flex;justify-content:space-between;align-items:center;margin:18px 20px;color:#555}
 .search{width:42px;height:42px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:18px}
 select{border:none;background:transparent;font-size:16px;color:#555}
-.transaction{background:white;margin:0 20px;padding:22px 0;border-bottom:1px solid #eee}
+.transaction{background:white;margin:0 8px;padding:14px 10px;border-bottom:1px solid #eee}
 .tr-top{display:flex;justify-content:space-between}
-.tr-name{font-size:18px;font-weight:800}
-.tr-amount{font-size:24px;font-weight:900}
+.tr-name{font-size:10px;font-weight:800}
+.tr-amount{font-size:13px;font-weight:900}
 .plus{color:#1f63ff}
 .minus{color:#111}
 
@@ -139,6 +187,7 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 
 <div id="historyPage" class="hidden page">
   <div class="account-top">
+    <div class="history-back" onclick="goPage('homePage')">‹</div>
     <div class="account-row">
       <div>
         <h1>MY 입출금통장</h1>
@@ -351,12 +400,12 @@ function render(data){
     <div class="transaction">
       <div class="tr-top">
         <div>
-          <div style="font-size:18px;color:#333">${t.date} | ${t.time}</div>
+          <div style="font-size:10px;color:#333">${t.date} | ${t.time}</div>
           <div class="tr-name" style="margin-top:20px">${t.name}</div>
         </div>
         <div style="text-align:right">
           <div class="tr-amount ${plus?'plus':'minus'}">${plus?'+':'-'}${Math.abs(t.amount).toLocaleString()}원</div>
-          <div style="color:#666;margin-top:12px">잔액 ${t.balance}</div>
+          <div style="color:#666;margin-top:6px;font-size:10px">잔액 ${t.balance}</div>
         </div>
       </div>
     </div>`;
