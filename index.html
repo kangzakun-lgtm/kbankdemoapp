@@ -105,10 +105,12 @@ body{background:#f4f5f7;color:#111}
 .filter{display:flex;justify-content:space-between;align-items:center;margin:18px 20px;color:#555}
 .search{width:42px;height:42px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:18px}
 select{border:none;background:transparent;font-size:16px;color:#555}
-.transaction{background:white;margin:0 8px;padding:14px 10px;border-bottom:1px solid #eee}
-.tr-top{display:flex;justify-content:space-between}
-.tr-name{font-size:14px;font-weight:800}
-.tr-amount{font-size:17px;font-weight:900}
+.transaction{background:white;margin:0 20px;padding:22px 0 24px;border-bottom:1px solid #eee}
+.tr-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.tr-date{font-size:17px;color:#222;margin-bottom:20px;}
+.tr-name{font-size:18px;font-weight:800}
+.tr-amount{font-size:26px;font-weight:900;letter-spacing:-0.5px;}
+.tr-balance{color:#666;margin-top:8px;font-size:16px;}
 .plus{color:#1f63ff}
 .minus{color:#111}
 
@@ -499,16 +501,19 @@ function render(data){
   transactionList.innerHTML="";
   data.forEach(t=>{
     const plus=t.amount>0;
-    transactionList.innerHTML+=`
+    transactionList.innerHTML += `
     <div class="transaction">
       <div class="tr-top">
         <div>
-          <div style="font-size:10px;color:#333">${t.date} | ${t.time}</div>
-          <div class="tr-name" style="margin-top:20px">${t.name}</div>
+          <div class="tr-date">${t.date} | ${t.time}</div>
+          <div class="tr-name">${t.name}</div>
         </div>
+  
         <div style="text-align:right">
-          <div class="tr-amount ${plus?'plus':'minus'}">${plus?'+':'-'}${Math.abs(t.amount).toLocaleString()}원</div>
-          <div style="color:#666;margin-top:6px;font-size:10px">잔액 ${t.balance}</div>
+          <div class="tr-amount ${plus?'plus':'minus'}">
+            ${plus?'+':'-'}${Math.abs(t.amount).toLocaleString()}원
+          </div>
+          <div class="tr-balance">잔액 ${t.balance}</div>
         </div>
       </div>
     </div>`;
