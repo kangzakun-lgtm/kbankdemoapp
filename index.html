@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>K Wallet Demo</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
 body{background:#f4f5f7;color:#111}
@@ -13,6 +14,7 @@ body{background:#f4f5f7;color:#111}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 .demo{position:fixed;top:48px;right:18px;z-index:99;background:#111;color:white;font-size:11px;padding:5px 9px;border-radius:999px;opacity:.25}
+
 .loading{position:fixed;inset:0;background:white;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column}
 .spinner{width:46px;height:46px;border:5px solid #e5e7eb;border-top-color:#001dce;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -20,7 +22,7 @@ body{background:#f4f5f7;color:#111}
 
 .header{padding:60px 22px 18px;display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:34px;font-weight:900;color:#001b6d}
-.back{padding:58px 22px 0;font-size:30px}
+.back{padding:58px 22px 0;font-size:34px}
 
 .card{margin:0 20px;background:linear-gradient(135deg,#00104a,#00218f);color:white;border-radius:28px;padding:24px}
 .card h2{font-size:21px}
@@ -43,7 +45,7 @@ body{background:#f4f5f7;color:#111}
 .account-top{background:white;border-bottom-left-radius:34px;border-bottom-right-radius:34px;padding:54px 22px 30px}
 .account-row{display:flex;justify-content:space-between}
 .account-top h1{font-size:34px;margin-top:18px}
-.account-top .account-no{font-size:18px;color:#555;margin-top:8px}
+.account-no{font-size:18px;color:#555;margin-top:8px}
 .account-top .amount{text-align:right;font-size:48px;font-weight:900;margin-top:34px}
 .btn-row{display:flex;gap:14px;margin-top:28px}
 .btn{flex:1;height:58px;border:none;border-radius:18px;font-size:20px;font-weight:900}
@@ -60,8 +62,8 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 .tr-top{display:flex;justify-content:space-between}
 .tr-name{font-size:22px;font-weight:800}
 .tr-amount{font-size:28px;font-weight:900}
-.plus{color:#1f63ff}.minus{color:#111}
-.tr-bottom{margin-top:10px;display:flex;justify-content:space-between;color:#666;font-size:15px}
+.plus{color:#1f63ff}
+.minus{color:#111}
 
 .transfer-wrap{padding:24px}
 .transfer-title{font-size:42px;font-weight:900;line-height:1.25;margin-top:28px}
@@ -73,7 +75,8 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 .recent{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
 .bank{display:flex;align-items:center;gap:16px}
 .logo-circle{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px}
-.yellow{background:#ffe500}.bluebank{background:#0050ff;color:white}
+.yellow{background:#ffe500}
+.bluebank{background:#0050ff;color:white}
 .recent-name{font-size:24px;font-weight:800}
 .recent-sub{font-size:17px;color:#777;margin-top:4px}
 
@@ -84,12 +87,22 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 .empty p{font-size:21px;line-height:1.55;color:#777;margin-top:22px}
 .bottom-buttons{display:flex;gap:14px;padding:20px 20px 40px}
 
+.all-page{background:white;padding:58px 22px 120px}
+.all-header{display:flex;justify-content:space-between;align-items:center;font-size:30px;font-weight:900;margin-bottom:54px}
+.all-header span{color:#999}
+.all-section{border-top:1px solid #eee;padding:30px 0 26px}
+.all-section h2{font-size:28px;margin-bottom:30px}
+.all-menu{display:grid;grid-template-columns:1fr 1fr;row-gap:30px;column-gap:24px;font-size:22px;line-height:1.4}
+.chatbot{position:fixed;right:26px;bottom:110px;width:76px;height:76px;border-radius:50%;background:#03051d;color:white;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800}
+
 .tabbar{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:auto;background:white;display:flex;justify-content:space-around;padding:14px 0 28px;border-top:1px solid #eee}
-.tab{text-align:center;font-size:13px}.tab div{font-size:23px;margin-bottom:4px}
+.tab{text-align:center;font-size:13px}
+.tab div{font-size:23px;margin-bottom:4px}
 </style>
 </head>
 
 <body>
+
 <div class="demo">DEMO UI</div>
 
 <div id="loading" class="loading">
@@ -117,7 +130,7 @@ select{border:none;background:transparent;font-size:16px;color:#555}
     <div class="menu" onclick="goPage('transferPage')"><div class="menu-icon">💸</div><div class="menu-name">이체</div></div>
     <div class="menu"><div class="menu-icon">💳</div><div class="menu-name">카드</div></div>
     <div class="menu"><div class="menu-icon">🏧</div><div class="menu-name">ATM출금</div></div>
-    <div class="menu"><div class="menu-icon">☰</div><div class="menu-name">전체</div></div>
+    <div class="menu" onclick="goPage('allPage')"><div class="menu-icon">☰</div><div class="menu-name">전체</div></div>
   </div>
 
   <div class="banner-track">
@@ -175,6 +188,14 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 
     <input class="input" placeholder="계좌번호 입력">
 
+    <div class="section-title">내 계좌</div>
+    <div class="recent">
+      <div class="bank">
+        <div class="logo-circle" style="background:#eef2ff;color:#001dce">+</div>
+        <div class="recent-name">다른 은행 계좌 불러오기</div>
+      </div>
+    </div>
+
     <div class="section-title">최근 보낸 계좌</div>
 
     <div class="recent">
@@ -212,13 +233,111 @@ select{border:none;background:transparent;font-size:16px;color:#555}
   </div>
 </div>
 
+<div id="allPage" class="hidden page all-page">
+  <div class="all-header">
+    <div><b>박광현</b> <span>›</span></div>
+    <div>⚙️</div>
+  </div>
+
+  <div class="all-section">
+    <h2>이체/출금</h2>
+    <div class="all-menu">
+      <div onclick="goPage('transferPage')">이체하기</div>
+      <div>이체내역</div>
+      <div>이체한도 변경</div>
+      <div>자동이체 등록/조회</div>
+      <div>세금/공과금 내기</div>
+      <div>자동납부 등록/조회</div>
+      <div>타행 자동납부 가져오기</div>
+      <div>카드 없이 현금찾기</div>
+      <div>케이뱅크페이</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>계좌</h2>
+    <div class="all-menu">
+      <div>잠자는 잔고 모으기</div>
+      <div>계좌통합조회</div>
+      <div>계좌 만들기</div>
+      <div>계좌 숨기기</div>
+      <div>휴대폰 계좌번호</div>
+      <div>나의 현금흐름</div>
+      <div>이달의 지출점검</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>카드</h2>
+    <div class="all-menu">
+      <div>체크카드 만들기</div>
+      <div>카드 사용내역</div>
+      <div>신용카드 만들기</div>
+      <div>교통카드 이용내역</div>
+      <div>브랜드 쿠폰북</div>
+      <div>정부지원금 받기</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>대출</h2>
+    <div class="all-menu">
+      <div>내 신용관리</div>
+      <div>대출 비교하기</div>
+      <div>내 DSR 계산기</div>
+      <div>우리집 변동알림</div>
+      <div>전셋집 안심스캔</div>
+      <div>HF전세지킴보증</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>투자</h2>
+    <div class="all-menu">
+      <div>업비트 라운지</div>
+      <div>주간 투자왕</div>
+      <div>업비트 입금한도</div>
+      <div>주식 둘러보기</div>
+      <div>주식 투자</div>
+      <div>투자 스터디</div>
+      <div>공모주 메이트</div>
+      <div>투자 캘린더</div>
+      <div>금 투자서비스</div>
+      <div>가상자산 시세조회</div>
+      <div>비상장주식 시세조회</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>해외</h2>
+    <div class="all-menu">
+      <div>해외 송금하기</div>
+      <div>우대받고 환전하기</div>
+    </div>
+  </div>
+
+  <div class="all-section">
+    <h2>생활/편의</h2>
+    <div class="all-menu">
+      <div>오아시스 장보기</div>
+      <div>입출금 리워드</div>
+      <div>요즘 케뱅</div>
+      <div>오늘의 생활시세</div>
+      <div>친구에게 1만원 선물하기</div>
+    </div>
+  </div>
+
+  <div class="chatbot">상담</div>
 </div>
 
-<div class="tabbar">
+</div>
+
+<div class="tabbar" id="tabbar">
   <div class="tab" onclick="goPage('homePage')"><div>🏠</div>홈</div>
   <div class="tab" onclick="goPage('transferPage')"><div>💸</div>이체</div>
   <div class="tab"><div>🎁</div>혜택</div>
-  <div class="tab"><div>☰</div>전체</div>
+  <div class="tab"><div>📈</div>투자</div>
+  <div class="tab" onclick="goPage('allPage')"><div>☰</div>전체</div>
 </div>
 
 <script>
@@ -240,8 +359,14 @@ function render(data){
     transactionList.innerHTML+=`
     <div class="transaction">
       <div class="tr-top">
-        <div><div style="font-size:18px;color:#333">${t.date} | ${t.time}</div><div class="tr-name" style="margin-top:20px">${t.name}</div></div>
-        <div style="text-align:right"><div class="tr-amount ${plus?'plus':'minus'}">${plus?'+':'-'}${Math.abs(t.amount).toLocaleString()}원</div><div style="color:#666;margin-top:12px">잔액 ${t.balance}</div></div>
+        <div>
+          <div style="font-size:18px;color:#333">${t.date} | ${t.time}</div>
+          <div class="tr-name" style="margin-top:20px">${t.name}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="tr-amount ${plus?'plus':'minus'}">${plus?'+':'-'}${Math.abs(t.amount).toLocaleString()}원</div>
+          <div style="color:#666;margin-top:12px">잔액 ${t.balance}</div>
+        </div>
       </div>
     </div>`;
   });
@@ -263,6 +388,12 @@ function goPage(id){
     document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
     document.getElementById(id).classList.remove("hidden");
     window.scrollTo(0,0);
+
+    if(id==="historyPage" || id==="transferPage" || id==="importPage"){
+      tabbar.classList.add("hidden");
+    }else{
+      tabbar.classList.remove("hidden");
+    }
   });
 }
 
@@ -274,5 +405,6 @@ function showLoading(done){
   },1000+Math.random()*600);
 }
 </script>
+
 </body>
 </html>
