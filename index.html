@@ -134,6 +134,74 @@ select{border:none;background:transparent;font-size:16px;color:#555}
 .empty p{font-size:18px;line-height:1.55;color:#777;margin-top:22px}
 .bottom-buttons{display:flex;gap:14px;padding:20px 20px 40px}
 
+.filter-sheet-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:900;
+  display:flex;
+  align-items:flex-end;
+}
+.filter-sheet{
+  width:100%;
+  max-width:430px;
+  margin:auto;
+  background:white;
+  border-top-left-radius:28px;
+  border-top-right-radius:28px;
+  padding:28px 22px 34px;
+}
+.filter-title{
+  font-size:18px;
+  font-weight:900;
+  margin:24px 0 14px;
+}
+.option-row{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.option-row.four{
+  grid-template-columns:repeat(4,1fr);
+}
+.option-btn{
+  height:52px;
+  border:1px solid #ddd;
+  border-radius:14px;
+  background:white;
+  font-size:15px;
+  font-weight:700;
+}
+.option-btn.active{
+  background:#eef3ff;
+  border-color:#001dce;
+  color:#001dce;
+  font-weight:900;
+}
+.amount-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.amount-input{
+  height:58px;
+  border:1px solid #e1e4ea;
+  border-radius:14px;
+  padding:0 16px;
+  font-size:16px;
+}
+.sheet-confirm{
+  width:100%;
+  height:60px;
+  margin-top:28px;
+  border:none;
+  border-radius:16px;
+  background:#001dce;
+  color:white;
+  font-size:18px;
+  font-weight:900;
+}
+
 .all-page{background:white;padding:58px 22px 120px}
 .all-header{display:flex;justify-content:space-between;align-items:center;font-size:26px;font-weight:900;margin-bottom:54px}
 .all-header span{color:#999}
@@ -218,17 +286,45 @@ select{border:none;background:transparent;font-size:16px;color:#555}
     </div>
   </div>
 
-  <div class="filter">
-    <div class="search">⌕</div>
-    <select onchange="changeSort(this.value)">
-      <option value="latest">3개월 · 입출금 · 최신순</option>
-      <option value="amount">3개월 · 입출금 · 금액순</option>
-    </select>
+<div class="filter">
+  <div class="search">⌕</div>
+  <div onclick="openFilterSheet()" id="filterLabel" style="font-size:15px;color:#555;">
+    3개월 · 입출금 · 최신순 ˅
   </div>
+</div>
 
   <div id="transactionList"></div>
 </div>
 
+<div id="filterSheet" class="filter-sheet-bg hidden" onclick="closeFilterSheet(event)">
+  <div class="filter-sheet" onclick="event.stopPropagation()">
+    <div class="filter-title">기간</div>
+    <div class="option-row four">
+      <button class="option-btn" onclick="setFilter('period','1개월',this)">1개월</button>
+      <button class="option-btn active" onclick="setFilter('period','3개월',this)">3개월</button>
+      <button class="option-btn" onclick="setFilter('period','6개월',this)">6개월</button>
+      <button class="option-btn" onclick="setFilter('period','직접입력',this)">직접입력</button>
+    </div>
+    <div class="filter-title">유형</div>
+    <div class="option-row">
+      <button class="option-btn active" onclick="setFilter('type','입출금',this)">입출금</button>
+      <button class="option-btn" onclick="setFilter('type','출금만',this)">출금만</button>
+      <button class="option-btn" onclick="setFilter('type','입금만',this)">입금만</button>
+    </div>
+    <div class="filter-title">순서</div>
+    <div class="option-row">
+      <button class="option-btn active" onclick="setFilter('order','최신순',this)">최신순</button>
+      <button class="option-btn" onclick="setFilter('order','과거순',this)">과거순</button>
+    </div>
+    <div class="filter-title">금액</div>
+    <div class="amount-row">
+      <input id="minAmount" class="amount-input" placeholder="최소">
+      <input id="maxAmount" class="amount-input" placeholder="최대">
+    </div>
+    <button class="sheet-confirm" onclick="applyFilter()">확인</button>
+  </div>
+</div>
+  
 <div id="transferPage" class="hidden page">
   <div class="back" onclick="goPage('homePage')">‹</div>
   <div class="transfer-wrap">
@@ -420,13 +516,47 @@ function render(data){
 }
 render(transactions);
 
-function changeSort(v){
+let currentFilter = {
+  period: "3개월",
+  type: "입출금",
+  order: "최신순"
+};
+function openFilterSheet(){
+  filterSheet.classList.remove("hidden");
+}
+function closeFilterSheet(e){
+  filterSheet.classList.add("hidden");
+}
+function setFilter(key,value,btn){
+  currentFilter[key] = value;
+  const group = btn.parentElement.querySelectorAll(".option-btn");
+  group.forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+function applyFilter(){
+  let result = [...transactions];
+  if(currentFilter.type === "입금만"){
+    result = result.filter(t => t.amount > 0);
+  }
+  if(currentFilter.type === "출금만"){
+    result = result.filter(t => t.amount < 0);
+  }
+  const min = Number(document.getElementById("minAmount").value.replace(/,/g,""));
+  const max = Number(document.getElementById("maxAmount").value.replace(/,/g,""));
+  if(min){
+    result = result.filter(t => Math.abs(t.amount) >= min);
+  }
+  if(max){
+    result = result.filter(t => Math.abs(t.amount) <= max);
+  }
+  if(currentFilter.order === "과거순"){
+    result = [...result].reverse();
+  }
+  filterLabel.innerText =
+    `${currentFilter.period} · ${currentFilter.type} · ${currentFilter.order} ˅`;
+  filterSheet.classList.add("hidden");
   showLoading(()=>{
-    if(v==="amount"){
-      render([...transactions].sort((a,b)=>Math.abs(b.amount)-Math.abs(a.amount)));
-    }else{
-      render(transactions);
-    }
+    render(result);
   });
 }
 
