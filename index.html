@@ -828,6 +828,7 @@ function showLoading(done){
 }
 
 function openDetail(name, amount, balance, date, time){
+
   const plus = amount > 0;
   const absAmount = Math.abs(amount).toLocaleString();
 
@@ -837,13 +838,34 @@ function openDetail(name, amount, balance, date, time){
   detailTransferAmount.innerText = `${absAmount} 원`;
   detailBalance.innerText = balance;
 
-  detailBoxLabel.innerText = plus ? "입금 금액" : "이체 금액";
+  detailBoxLabel.innerText =
+    plus ? "입금 금액" : "이체 금액";
 
   if(plus){
+
     receiveAccountRow.style.display = "flex";
-    detailAccount.innerText = "K Wallet 입출금통장";
+
+    document.querySelector(
+      "#receiveAccountRow .detail-label"
+    ).innerText = "상대 정보";
+
+    let bank = "카카오뱅크";
+
+    if(name === "오택우"){
+      bank = "신한은행";
+    }
+
+    if(name === "추헌승"){
+      bank = "농협은행";
+    }
+
+    detailAccount.innerText =
+      `${name} · ${bank}`;
+
   }else{
+
     receiveAccountRow.style.display = "none";
+
   }
 
   goPage("detailPage");
