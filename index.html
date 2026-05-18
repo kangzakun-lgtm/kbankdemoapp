@@ -302,6 +302,64 @@ select{border:none;background:transparent;font-size:16px;color:#555}
   color:#666;
   line-height:1.4;
 }
+
+.detail-page{
+  min-height:100vh;
+  background:white;
+  padding:56px 22px 40px;
+}
+
+.detail-close{
+  text-align:right;
+  font-size:34px;
+}
+
+.detail-title{
+  margin-top:52px;
+  font-size:30px;
+  font-weight:900;
+}
+
+.detail-memo{
+  margin-top:22px;
+  font-size:18px;
+  color:#666;
+}
+
+.detail-line{
+  border-top:1px solid #eee;
+  margin:60px 0 28px;
+}
+
+.detail-row{
+  display:flex;
+  justify-content:space-between;
+  margin:22px 0;
+  font-size:17px;
+}
+
+.detail-label{
+  color:#666;
+}
+
+.detail-value{
+  font-weight:600;
+  text-align:right;
+}
+
+.detail-box{
+  background:#f5f7fb;
+  border-radius:14px;
+  padding:18px;
+  margin:20px 0;
+}
+
+.detail-box .detail-row{
+  margin:10px 0;
+}
+  
+  
+  
 .all-page{background:white;padding:58px 22px 120px}
 .all-header{display:flex;justify-content:space-between;align-items:center;font-size:26px;font-weight:900;margin-bottom:54px}
 .all-header span{color:#999}
@@ -509,6 +567,57 @@ select{border:none;background:transparent;font-size:16px;color:#555}
   </div>
 </div>
 
+<div id="detailPage" class="hidden page">
+  <div class="detail-page">
+
+    <div class="detail-close" onclick="goPage('historyPage')">×</div>
+
+    <div class="detail-title" id="detailName">거래명</div>
+
+    <div class="detail-memo">메모 입력 ✎</div>
+
+    <div class="detail-line"></div>
+
+    <div class="detail-row">
+      <div class="detail-label">거래 일시</div>
+      <div class="detail-value" id="detailDate">-</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">거래 구분</div>
+      <div class="detail-value">전자금융</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">거래 금액</div>
+      <div class="detail-value" id="detailAmount">-</div>
+    </div>
+
+    <div class="detail-box">
+      <div class="detail-row">
+        <div class="detail-label" id="detailBoxLabel">이체 금액</div>
+        <div class="detail-value" id="detailTransferAmount">-</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-label">수수료</div>
+        <div class="detail-value">0 원</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">계좌 잔액</div>
+      <div class="detail-value" id="detailBalance">-</div>
+    </div>
+
+    <div id="receiveAccountRow" class="detail-row">
+      <div class="detail-label">받는 계좌</div>
+      <div class="detail-value" id="detailAccount">-</div>
+    </div>
+
+  </div>
+</div>
+  
 <div id="allPage" class="hidden page all-page">
   <div class="all-header">
     <div><b>박광현</b> <span>›</span></div>
@@ -633,7 +742,7 @@ function render(data){
   data.forEach(t=>{
     const plus=t.amount>0;
     transactionList.innerHTML += `
-    <div class="transaction">
+    <div class="transaction" onclick="openDetail('${t.name}', ${t.amount}, '${t.balance}', '${t.date}', '${t.time}')">
       <div class="tr-top">
         <div>
           <div class="tr-date">${t.date} | ${t.time}</div>
@@ -717,6 +826,29 @@ function showLoading(done){
     loading.classList.add("hidden");
   },1000+Math.random()*600);
 }
+
+function openDetail(name, amount, balance, date, time){
+  const plus = amount > 0;
+  const absAmount = Math.abs(amount).toLocaleString();
+
+  detailName.innerText = name;
+  detailDate.innerText = `2025.${date} ${time}`;
+  detailAmount.innerText = `${plus ? '+' : '-'}${absAmount}원`;
+  detailTransferAmount.innerText = `${absAmount} 원`;
+  detailBalance.innerText = balance;
+
+  detailBoxLabel.innerText = plus ? "입금 금액" : "이체 금액";
+
+  if(plus){
+    receiveAccountRow.style.display = "flex";
+    detailAccount.innerText = "K Wallet 입출금통장";
+  }else{
+    receiveAccountRow.style.display = "none";
+  }
+
+  goPage("detailPage");
+}
+  
 </script>
 
 </body>
